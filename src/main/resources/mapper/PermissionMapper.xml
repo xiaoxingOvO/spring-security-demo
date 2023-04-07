@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xx.springsecuritydemo.mapper.PermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.xx.springsecuritydemo.domain.Permission">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="resource" column="resource" jdbcType="VARCHAR"/>
+            <result property="state" column="state" jdbcType="INTEGER"/>
+            <result property="menuId" column="menu_id" jdbcType="BIGINT"/>
+            <result property="expression" column="expression" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,resource,
+        state,menu_id,expression
+    </sql>
+    <select id="selectPermissionsByUserId" resultType="com.xx.springsecuritydemo.domain.Permission">
+        select p.id,p.name,p.resource,p.expression
+        from t_user_role ur join t_role_permission rp on ur.role_id = rp.role_id
+                            join t_permission p on p.id = rp.permission_id
+        where ur.user_id = #{userId}
+    </select>
+    <select id="selectAll" resultType="com.xx.springsecuritydemo.domain.Permission">
+        select  p.id,p.name,p.resource,p.expression
+        from t_permission p
+    </select>
+</mapper>
